@@ -37,31 +37,31 @@ module "s3-source" {
   ########################################################################
   # uncomment the below code only after the creation of buckets in step 1
   ########################################################################
-  replication_role_arns = [module.role-s3-replication.role_arn]
+  # replication_role_arns = [module.role-s3-replication.role_arn]
 
-  replication_configuration = {
-    role_name = module.role-s3-replication.role_name
-    rules = [
-      {
-        id       = "bar"
-        status   = "Enabled"
-        priority = 1
+  # replication_configuration = {
+  #   role_name = module.role-s3-replication.role_name
+  #   rules = [
+  #     {
+  #       id       = "bar"
+  #       status   = "Enabled"
+  #       priority = 1
 
-        destination = {
-          bucket             = "DESTINATION_BUCKET_ARN_GOES_HERE"
-          storage_class      = "STANDARD"
-          replica_kms_key_id = "DESTINATION_KMS_KEY_ARN_GOES_HERE"
-        }
+  #       destination = {
+  #         bucket             = "DESTINATION_BUCKET_ARN_GOES_HERE"
+  #         storage_class      = "STANDARD"
+  #         replica_kms_key_id = "DESTINATION_KMS_KEY_ARN_GOES_HERE"
+  #       }
 
-        filter = {
-          prefix = "logs"
-          tags = {
-            ReplicateMe = "Yes"
-          }
-        }
-      }
-    ]
-  }
+  #       filter = {
+  #         prefix = "logs"
+  #         tags = {
+  #           ReplicateMe = "Yes"
+  #         }
+  #       }
+  #     }
+  #   ]
+  # }
 }
 
 module "s3-dest" {
@@ -77,29 +77,29 @@ module "s3-dest" {
   ############################################################################
   #uncomment the below code only after provisioning of the bucket in step 1
   ############################################################################
-  replication_role_arns = [module.role-s3-replication.role_arn]
+  # replication_role_arns = [module.role-s3-replication.role_arn]
 
-  replication_configuration = {
-    role_name = module.role-s3-replication.role_name
-    rules = [
-      {
-        id       = "bar"
-        status   = "Enabled"
-        priority = 1
+  # replication_configuration = {
+  #   role_name = module.role-s3-replication.role_name
+  #   rules = [
+  #     {
+  #       id       = "bar"
+  #       status   = "Enabled"
+  #       priority = 1
 
-        destination = {
-          bucket             = "SOURCE_BUCKET_ARN_GOES_HERE"
-          storage_class      = "STANDARD"
-          replica_kms_key_id = "SOURCE_KMS_KEY_ARN_GOES_HERE"
-        }
+  #       destination = {
+  #         bucket             = "SOURCE_BUCKET_ARN_GOES_HERE"
+  #         storage_class      = "STANDARD"
+  #         replica_kms_key_id = "SOURCE_KMS_KEY_ARN_GOES_HERE"
+  #       }
 
-        filter = {
-          prefix = "logs"
-          tags = {
-            ReplicateMe = "Yes"
-          }
-        }
-      }
-    ]
-  }
+  #       filter = {
+  #         prefix = "logs"
+  #         tags = {
+  #           ReplicateMe = "Yes"
+  #         }
+  #       }
+  #     }
+  #   ]
+  # }
 }
