@@ -1,5 +1,5 @@
 resource "aws_iam_role" "s3_replication" {
-  name = "${var.name}_repl_role"
+  name = "${var.name}-role"
 
   assume_role_policy = <<POLICY
 {
@@ -19,7 +19,7 @@ POLICY
 }
 
 resource "aws_iam_policy" "s3_replication" {
-  name = "${var.name}_repl_policy"
+  name = "${var.name}-policy"
 
   policy = <<POLICY
 {
