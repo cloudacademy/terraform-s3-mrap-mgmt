@@ -26,6 +26,26 @@ resource "aws_subnet" "region1" {
   cidr_block = "10.201.0.0/24"
 }
 
+resource "aws_security_group" "vpc_endpoint_s3_region1" {
+  provider = aws
+
+  vpc_id = aws_vpc.region1.id
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 module "vpc-endpoint-s3-global-region1" {
   providers = {
     aws = aws
@@ -39,8 +59,9 @@ module "vpc-endpoint-s3-global-region1" {
     region       = "us-east-1"
   }
 
-  vpc_id     = aws_vpc.region1.id
-  subnet_ids = [aws_subnet.region1.id]
+  vpc_id             = aws_vpc.region1.id
+  subnet_ids         = [aws_subnet.region1.id]
+  security_group_ids = [aws_security_group.vpc_endpoint_s3_region1.id]
 }
 
 resource "aws_route_table" "region1" {
@@ -151,6 +172,26 @@ resource "aws_subnet" "region2" {
   cidr_block = "10.202.0.0/24"
 }
 
+resource "aws_security_group" "vpc_endpoint_s3_region2" {
+  provider = aws.us-west-2
+
+  vpc_id = aws_vpc.region2.id
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 module "vpc-endpoint-s3-global-region2" {
   providers = {
     aws = aws.us-west-2
@@ -164,8 +205,9 @@ module "vpc-endpoint-s3-global-region2" {
     region       = "us-west-2"
   }
 
-  vpc_id     = aws_vpc.region2.id
-  subnet_ids = [aws_subnet.region2.id]
+  vpc_id             = aws_vpc.region2.id
+  subnet_ids         = [aws_subnet.region2.id]
+  security_group_ids = [aws_security_group.vpc_endpoint_s3_region2.id]
 }
 
 resource "aws_route_table" "region2" {
