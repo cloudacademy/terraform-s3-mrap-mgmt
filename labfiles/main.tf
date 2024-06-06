@@ -22,8 +22,9 @@ resource "aws_vpc" "region1" {
 resource "aws_subnet" "region1" {
   provider = aws
 
-  vpc_id     = aws_vpc.region1.id
-  cidr_block = "10.201.0.0/24"
+  vpc_id            = aws_vpc.region1.id
+  availability_zone = "us-east-1a"
+  cidr_block        = "10.201.0.0/24"
 }
 
 resource "aws_security_group" "vpc_endpoint_s3_region1" {
@@ -168,8 +169,9 @@ resource "aws_vpc" "region2" {
 resource "aws_subnet" "region2" {
   provider = aws.us-west-2
 
-  vpc_id     = aws_vpc.region2.id
-  cidr_block = "10.202.0.0/24"
+  vpc_id            = aws_vpc.region2.id
+  availability_zone = "us-west-2a"
+  cidr_block        = "10.202.0.0/24"
 }
 
 resource "aws_security_group" "vpc_endpoint_s3_region2" {
