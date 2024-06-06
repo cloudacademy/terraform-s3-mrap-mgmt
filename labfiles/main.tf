@@ -1,4 +1,5 @@
 resource "aws_iam_instance_profile" "lab_instance" {
+  name = "lab_instance_mrap_profile"
   role = "lab_instance_mrap"
 }
 
