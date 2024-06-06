@@ -103,3 +103,81 @@ module "s3-dest" {
   #   ]
   # }
 }
+
+# REGION 1 (us-east-1)
+# ====================================
+
+data "aws_vpc" "region1" {
+  # provider = aws.us-west-2
+
+  default = true
+  state   = "available"
+}
+
+data "aws_subnet" "region1" {
+  # provider = aws.us-west-2
+
+  vpc_id            = data.aws_vpc.region1.id
+  availability_zone = "us-east-1a"
+  state             = "available"
+}
+
+module "vpc-endpoint-s3-global-region1" {
+  source = "./modules/vpc-endpoint"
+
+  private_dns_only_for_inbound_resolver_endpoint = false
+  configuration = {
+    service_name = "com.amazonaws.s3-global.accesspoint"
+    subnet_type  = "Private"
+    region       = "us-east-1"
+  }
+
+  vpc_id     = data.aws_vpc.region1.id
+  subnet_ids = [data.aws_subnet.region1.id]
+}
+
+# REGION 2 (us-west-2)
+# ====================================
+
+data "aws_vpc" "region2" {
+  provider = aws.us-west-2
+
+  default = true
+  state   = "available"
+}
+
+data "aws_subnet" "region2" {
+  provider = aws.us-west-2
+
+  vpc_id            = data.aws_vpc.region2.id
+  availability_zone = "us-west-2a"
+  state             = "available"
+}
+
+module "vpc-endpoint-s3-global-region2" {
+  providers = {
+    aws = aws.us-west-2
+  }
+  source = "./modules/vpc-endpoint"
+
+  private_dns_only_for_inbound_resolver_endpoint = false
+  configuration = {
+    service_name = "com.amazonaws.s3-global.accesspoint"
+    subnet_type  = "Private"
+    region       = "us-west-2"
+  }
+
+  vpc_id     = data.aws_vpc.region2.id
+  subnet_ids = [data.aws_subnet.region2.id]
+}
+
+# S3 MRAP
+# ====================================
+
+module "s3-mrap" {
+  source = "./modules/s3-control"
+
+  create_mrap       = true
+  mrap_name         = "example-test-mrap"
+  mrap_bucket_names = [module.s3-source.bucket_name, module.s3-dest.bucket_name]
+}
