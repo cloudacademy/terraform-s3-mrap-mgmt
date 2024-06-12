@@ -1,5 +1,3 @@
-#v1
-
 locals {
   run_id = "prod"
 }
