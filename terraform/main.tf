@@ -40,7 +40,7 @@ module "s3-source" {
   # uncomment the below code only after the creation of buckets in step 1
   ########################################################################
   # replication_role_arns = [module.role-s3-replication.role_arn]
-
+  #
   # replication_configuration = {
   #   role_name = module.role-s3-replication.role_name
   #   rules = [
@@ -48,13 +48,13 @@ module "s3-source" {
   #       id       = "bar"
   #       status   = "Enabled"
   #       priority = 1
-
+  #
   #       destination = {
   #         bucket             = "DESTINATION_BUCKET_ARN_GOES_HERE"
   #         storage_class      = "STANDARD"
   #         replica_kms_key_id = "DESTINATION_KMS_KEY_ARN_GOES_HERE"
   #       }
-
+  #
   #       filter = {
   #         prefix = "logs"
   #         tags = {
@@ -77,10 +77,10 @@ module "s3-dest" {
   core_backups_retention       = "NOBACKUP"
 
   ############################################################################
-  #uncomment the below code only after provisioning of the bucket in step 1
+  # uncomment the below code only after provisioning of the bucket in step 1
   ############################################################################
   # replication_role_arns = [module.role-s3-replication.role_arn]
-
+  #
   # replication_configuration = {
   #   role_name = module.role-s3-replication.role_name
   #   rules = [
@@ -88,13 +88,13 @@ module "s3-dest" {
   #       id       = "bar"
   #       status   = "Enabled"
   #       priority = 1
-
+  #
   #       destination = {
   #         bucket             = "SOURCE_BUCKET_ARN_GOES_HERE"
   #         storage_class      = "STANDARD"
   #         replica_kms_key_id = "SOURCE_KMS_KEY_ARN_GOES_HERE"
   #       }
-
+  #
   #       filter = {
   #         prefix = "logs"
   #         tags = {
