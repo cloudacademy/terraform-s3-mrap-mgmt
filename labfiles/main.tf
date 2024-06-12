@@ -3,6 +3,8 @@ resource "aws_iam_instance_profile" "lab_instance" {
   role = "lab_instance_mrap"
 }
 
+data "aws_caller_identity" "current" {}
+
 # REGION1 VPC
 # ============================
 
@@ -118,9 +120,21 @@ resource "aws_instance" "region1" {
     cpu_credits = "standard"
   }
 
+  user_data = <<-EOFF
+#!/usr/bin/env bash
+set -x
+
+cat >> /home/ec2-user/.bash_profile << EOF
+export AWS_ACCOUNT_ID=${data.aws_caller_identity.current.account_id}
+export AWS_S3_MRAP_ARN=${var.s3_mrap_arn}
+EOF
+EOFF
+
   tags = {
     Name = "lab-instance-region1"
   }
+
+
 }
 
 resource "aws_vpc_endpoint" "ssm_region1" {
@@ -274,6 +288,16 @@ resource "aws_instance" "region2" {
   credit_specification {
     cpu_credits = "standard"
   }
+
+  user_data = <<-EOFF
+#!/usr/bin/env bash
+set -x
+
+cat >> /home/ec2-user/.bash_profile << EOF
+export AWS_ACCOUNT_ID=${data.aws_caller_identity.current.account_id}
+export AWS_S3_MRAP_ARN=${var.s3_mrap_arn}
+EOF
+EOFF
 
   tags = {
     Name = "lab-instance-region2"
